@@ -1,20 +1,41 @@
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
-let circleprop = { cx: 66, cy: 53.5, fill: "var(--fill-0,  #D9D9D9)", rx: 40, ry: 39.5 };
-let rectprop = { fill: "var(--fill-0,  #D9D9D9)", height: 19, width: 83, x: 62, y: 44 };
-const circle_shape = [];
-for (let i = 0; i < 5; i++) {
-    circle_shape.push(createElement("rect", {
-        key: `r-${i}`,
-        ...rectprop,
-    }));
-    circle_shape.push(createElement("ellipse", {
-        key: `e-${i}`,
-        ...circleprop,
-    }));
-    circleprop = { ...circleprop, cy: circleprop.cy + 60 };
-    rectprop = { ...rectprop, y: rectprop.y + 60 };
+class HTMLElements {
+    constructor(name, prop = {}, children = []) {
+        this.name = name;
+        this.prop = prop;
+        this.children = children;
+    }
 }
-const svg = createElement("svg", { width: 200, height: 200 }, circle_shape);
+function renderElement(element, key) {
+    const children = element.children.map((child, index) => renderElement(child, `${key}-${index}`));
+    return createElement(element.name, { key, ...element.prop }, children);
+}
+function groupHTMlElements(parent, elements, keyPrefix = "el") {
+    for (let i = 0; i < elements.length; i++) {
+        parent.push(renderElement(elements[i], `${keyPrefix}-${i}`));
+    }
+}
+function buildSvg(angle, index) {
+    const clipId = `clip_${index}`;
+    return new HTMLElements("svg", { viewBox: "0 0 127 114", width: 127, height: 114 }, [
+        new HTMLElements("g", { clipPath: `url(#${clipId})` }, [
+            new HTMLElements("ellipse", { cx: 66, cy: 53.5, rx: 40, ry: 39.5, fill: "#D9D9D9" }),
+            new HTMLElements("g", { transform: `rotate(${angle} 66 53.5)` }, [
+                new HTMLElements("rect", { x: 62, y: 44, width: 83, height: 19, fill: "#D9D9D9" })
+            ])
+        ]),
+        new HTMLElements("defs", {}, [
+            new HTMLElements("clipPath", { id: clipId }, [
+                new HTMLElements("rect", { width: 127, height: 114, fill: "white" })
+            ])
+        ])
+    ]);
+}
+const angles = [0, 25, 50, 75, 100];
+const svgColumn = [];
+angles.forEach((angle, i) => {
+    svgColumn.push(renderElement(buildSvg(angle, i), `svg-${i}`));
+});
 const root = createRoot(document.getElementById("root"));
-root.render(svg);
+root.render(createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12 } }, svgColumn));
