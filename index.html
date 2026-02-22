@@ -1,13 +1,33 @@
 <!DOCTYPE html>
-<div id="root"></div>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@19",
-    "react-dom/client": "https://esm.sh/react-dom@19/client"
-  }
-}
-</script>
-<script type="module" src="./main.js"></script>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Huvle</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19",
+          "react-dom/client": "https://esm.sh/react-dom@19/client"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <style>
+    html,body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-image: url("./compute-ea4c57a4.png"); /* or .jpg */
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  </style>
+    <div id="root"></div>
+    <script type="module" src="./dist/main.js"></script>
+  </body>
+</html>
 
 
