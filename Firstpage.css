@@ -16,6 +16,10 @@ html, body, #root {
     margin: 0;
 }
 
+.page, .page * {
+    box-sizing: border-box;
+}
+
 .page{
     --circle-col-width: 127px;
     --circle-col-gap: 50px;
@@ -123,8 +127,9 @@ html, body, #root {
 
 @media (max-width: 768px) {
   .page{
-    --circle-col-width: 70px;
-    --circle-col-gap: 24px;
+    --circle-col-width: 60px;
+    --circle-col-gap: 16px;
+    padding: 0 16px 16px;
   }
 
   .title-text{
@@ -132,11 +137,11 @@ html, body, #root {
   }
 
   .circle-row{
-    padding: 12px 8px;
+    padding: 12px 0;
   }
 
   .circle-col{
-    gap: 24px;
+    gap: 20px;
   }
 
   .circle-item{
@@ -144,18 +149,14 @@ html, body, #root {
   }
 
   .footer{
-    left: 24px;
-    right: 24px;
+    left: calc(var(--circle-col-width) + var(--circle-col-gap));
+    right: calc(var(--circle-col-width) + var(--circle-col-gap));
     bottom: 16px;
     max-width: none;
   }
 
   .title-wrap{
     padding-top: 24px;
-  }
-
-  .page{
-    padding: 0 24px;
   }
 }
 /*circle column styles*/
