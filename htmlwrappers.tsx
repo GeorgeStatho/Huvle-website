@@ -179,3 +179,15 @@ export function Footer(title: string,text:string, instagramLink:string,linkedinL
     </div>
   );
 }
+
+
+export function CreateImage(imgPath: string, className = "", width?: number, height?: number) {
+  return createElement("img", {
+    src: imgPath,
+    alt: "My photo",
+    className,
+    width,
+    height
+  });
+}
+

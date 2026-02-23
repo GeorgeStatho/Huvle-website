@@ -1,6 +1,6 @@
 import React, { createElement, JSX } from "react"
 import { createRoot } from "react-dom/client";
-import { HTMLElements, divWrapperElements, divWrap,innershadowdefs, Footer, Title} from "./htmlwrappers.js";
+import { HTMLElements, divWrapperElements, divWrap,innershadowdefs, Footer, Title,CreateImage} from "./htmlwrappers.js";
 
 //circle functions
 function createCircRect(x:number,y:number){
@@ -43,6 +43,21 @@ const rightCircles = divWrapperElements(
 );
 //end creating circles
 
+//images creating
+const images = [{src: "./assets/derek.jpg", caption:"The man himself"}];
+const imageItems = images.map((img) =>
+  createElement(
+    "div",
+    { className: "image-card" },
+    CreateImage(img.src, "image-item"),
+    createElement("p", { className: "image-caption" }, img.caption)
+  )
+);
+//end images creation
+
+
+
+//rendering
 const root = createRoot(document.getElementById("root")!);
 root.render(
   createElement(
@@ -55,7 +70,12 @@ root.render(
       "div",
       { className: "circle-row" },
       divWrap(leftCircles, { className: "circle-col left-col" }),
-      divWrap(rightCircles, { className: "circle-col right-col" })
+      createElement(
+        "div",
+        { className: "image-col" },
+        createElement("div", { className: "image-grid" }, imageItems)
+      ),
+      divWrap(rightCircles, { className: "circle-col right-col" }),
     )
   )
 );

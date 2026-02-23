@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
-import { HTMLElements, divWrapperElements, divWrap, innershadowdefs, Footer, Title } from "./htmlwrappers.js";
+import { HTMLElements, divWrapperElements, divWrap, innershadowdefs, Footer, Title, CreateImage } from "./htmlwrappers.js";
 //circle functions
 function createCircRect(x, y) {
     let group = [];
@@ -28,7 +28,12 @@ let leftCircles = divWrapperElements(svgColumn, {
 }, 45);
 const rightCircles = divWrapperElements(svgColumn, { className: "circle-item right-circle-col" }, 45);
 //end creating circles
+//images creating
+const images = [{ src: "./assets/derek.jpg", caption: "The man himself" }];
+const imageItems = images.map((img) => createElement("div", { className: "image-card" }, CreateImage(img.src, "image-item"), createElement("p", { className: "image-caption" }, img.caption)));
+//end images creation
+//rendering
 const root = createRoot(document.getElementById("root"));
 root.render(createElement("div", {
     className: "page",
-}, Title("The Dk Page", '"Jersey 25", sans-serif'), Footer("Derek Cardenas", "Aspiring mechanical engineering student at Vaughn College of Aeronautics and Technology. Studying in 3D design and modeling.", "https://www.instagram.com/derek46631?igsh=dmYwMWpsZzJ0cWpn", "https://www.linkedin.com/in/derek-cardenas-baa004261/"), createElement("div", { className: "circle-row" }, divWrap(leftCircles, { className: "circle-col left-col" }), divWrap(rightCircles, { className: "circle-col right-col" }))));
+}, Title("The Dk Page", '"Jersey 25", sans-serif'), Footer("Derek Cardenas", "Aspiring mechanical engineering student at Vaughn College of Aeronautics and Technology. Studying in 3D design and modeling.", "https://www.instagram.com/derek46631?igsh=dmYwMWpsZzJ0cWpn", "https://www.linkedin.com/in/derek-cardenas-baa004261/"), createElement("div", { className: "circle-row" }, divWrap(leftCircles, { className: "circle-col left-col" }), createElement("div", { className: "image-col" }, createElement("div", { className: "image-grid" }, imageItems)), divWrap(rightCircles, { className: "circle-col right-col" }))));

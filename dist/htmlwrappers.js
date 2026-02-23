@@ -92,3 +92,12 @@ function Social({ instagram, linkedin }) {
 export function Footer(title, text, instagramLink, linkedinLink) {
     return (_jsxs("div", { className: "footer", children: [_jsx(ParagraphTitle, { text: title }), _jsx(ParagraphText, { text: text }), _jsx(Social, { instagram: instagramLink, linkedin: linkedinLink })] }));
 }
+export function CreateImage(imgPath, className = "", width, height) {
+    return createElement("img", {
+        src: imgPath,
+        alt: "My photo",
+        className,
+        width,
+        height
+    });
+}
