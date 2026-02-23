@@ -58,8 +58,6 @@ const imageItems = images.map((img) =>
 );
 //end images creation
 
-
-
 //rendering
 const root = createRoot(document.getElementById("root")!);
 root.render(
@@ -83,3 +81,36 @@ root.render(
     )
   )
 );
+
+function startRandomCircleRotation() {
+  const circles = Array.from(document.querySelectorAll<HTMLElement>(".circle-rot"));
+  console.log("circle-rot count:", circles.length);
+  if (circles.length === 0) {
+    return;
+  }
+
+  circles.forEach((el, index) => {
+    const initialMatch = (el.style.transform || "").match(/rotate\(([-\d.]+)deg\)/);
+    const initial = initialMatch ? Number(initialMatch[1]) : 0;
+    el.dataset.rot = String(initial);
+
+    const tick = () => {
+      const current = Number(el.dataset.rot || "0");
+      const direction = Math.random() < 0.5 ? -1 : 1;
+      const step = 15 + Math.random() * 45;
+      const next = current + direction * step;
+      el.dataset.rot = String(next);
+      el.style.transform = `rotate(${next}deg)`;
+
+      const delay = 1200 + Math.random() * 2200;
+      setTimeout(tick, delay);
+    };
+
+    const initialDelay = index * 150 + Math.random() * 500;
+    setTimeout(tick, initialDelay);
+  });
+}
+
+window.addEventListener("load", () => {
+  setTimeout(startRandomCircleRotation, 0);
+});
