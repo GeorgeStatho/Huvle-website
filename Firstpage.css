@@ -123,8 +123,8 @@ html, body, #root {
 
 @media (max-width: 768px) {
   .page{
-    --circle-col-width: 90px;
-    --circle-col-gap: 16px;
+    --circle-col-width: 70px;
+    --circle-col-gap: 24px;
   }
 
   .title-text{
@@ -136,7 +136,7 @@ html, body, #root {
   }
 
   .circle-col{
-    gap: 12px;
+    gap: 24px;
   }
 
   .circle-item{
