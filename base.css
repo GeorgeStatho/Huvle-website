@@ -1,0 +1,23 @@
+html, body, #root {
+    height: 100%;
+    margin: 0;
+}
+
+.page, .page * {
+    box-sizing: border-box;
+}
+
+.page{
+    --circle-col-width: 127px;
+    --circle-col-gap: 50px;
+    position: relative;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+  .page{
+    --circle-col-width: 60px;
+    --circle-col-gap: 16px;
+    padding: 0 16px 16px;
+  }
+}

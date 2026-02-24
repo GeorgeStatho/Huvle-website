@@ -1,0 +1,44 @@
+.circle-col{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.circle-item{
+    width: 127px;
+    display: inline-block;
+}
+
+.left-col{
+    align-items: flex-start;
+}
+
+.right-col{
+    align-items: flex-end;
+    transform: scaleX(-1);
+    transform-origin: center;
+}
+
+.left-col .circle-item{
+    transform-origin: left center;
+}
+
+.right-col .circle-item{
+    transform-origin: right center;
+}
+
+.circle-rot{
+    display: inline-block;
+    transition: transform 0.6s ease;
+}
+
+@media (max-width: 768px) {
+  .circle-col{
+    gap: 20px;
+  }
+
+  .circle-item{
+    width: var(--circle-col-width);
+  }
+}

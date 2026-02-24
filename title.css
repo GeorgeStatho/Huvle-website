@@ -1,0 +1,33 @@
+.page-title{
+    color: white;
+    font-size: 24px;
+}
+
+.title-wrap{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    pointer-events: none;
+    padding-top: 40px;
+    z-index: 2;
+}
+
+.title-text{
+    color: white;
+    font-size: 96px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+  .title-text{
+    font-size: 48px;
+  }
+
+  .title-wrap{
+    padding-top: 16px;
+  }
+}

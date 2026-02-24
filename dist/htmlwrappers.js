@@ -15,13 +15,10 @@ export class HTMLElements {
 //const inner = new HTMLElements("span", "Inner text");
 //const outer = new HTMLElements("div", { className: "box" },inner.toJSX());
 //const jsx = outer.toJSX(); // <div class="box"><span>Inner text</span></div>
-export function divWrapperElements(elements, divprop, angleStep = 0) {
+export function divWrapperElements(elements, divprop) {
     const group = [];
-    let angle = 0;
     for (const element of elements) {
-        const inner = createElement("div", { className: "circle-rot", style: { transform: `rotate(${angle}deg)` } }, element);
-        group.push(new HTMLElements("div", divprop, inner).toJSX());
-        angle += angleStep;
+        group.push(new HTMLElements("div", divprop, element).toJSX());
     }
     return group;
 }

@@ -23,10 +23,11 @@ function createCircRectCol(x, y, count) {
 //end circle funtions
 //creating circles
 const svgColumn = createCircRectCol(66, 53.5, 6);
-let leftCircles = divWrapperElements(svgColumn, {
-    className: "circle-item left-circle-col"
-}, 45);
-const rightCircles = divWrapperElements(svgColumn, { className: "circle-item right-circle-col" }, 45);
+function withRotation(elements, angleStep) {
+    return elements.map((el, index) => createElement("div", { className: "circle-rot", style: { transform: `rotate(${index * angleStep}deg)` } }, el));
+}
+const leftCircles = divWrapperElements(withRotation(svgColumn, 45), { className: "circle-item left-circle-col" });
+const rightCircles = divWrapperElements(withRotation(svgColumn, 45), { className: "circle-item right-circle-col" });
 //end creating circles
 //images creating
 const images = [{ src: "./assets/derek.jpg", caption: "The man himself" },
