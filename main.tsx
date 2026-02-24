@@ -1,7 +1,11 @@
-import React, { createElement, JSX } from "react"
+import React, { createElement, RefObject, useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { HTMLElements, divWrapperElements, divWrap,innershadowdefs, Footer, Title,CreateImage} from "./htmlwrappers.js";
 
+
+
+const DESIGN_WIDTH = 1920;
+const DESIGN_HEIGHT = 1080;
 //circle functions
 function createCircRect(x:number,y:number){
     let group=[];
@@ -101,7 +105,41 @@ function Plane() {
   );
 }
 
+function useAutoFitPage(pageRef: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const fitPage = () => {
+      const page = pageRef.current;
+      if (!page) return;
 
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      const scaleX = vw / DESIGN_WIDTH;
+      const scaleY = vh / DESIGN_HEIGHT;
+      const scale = Math.min(scaleX, scaleY);
+
+      page.style.setProperty("--scale", String(scale));
+      page.style.transformOrigin = "center center";
+    };
+
+    fitPage();
+    window.addEventListener("resize", fitPage);
+    window.addEventListener("load", fitPage);
+
+    const fonts = (document as Document & {
+      fonts?: { ready?: Promise<unknown> };
+    }).fonts;
+
+    if (fonts?.ready) {
+      fonts.ready.then(() => fitPage()).catch(() => {});
+    }
+
+    return () => {
+      window.removeEventListener("resize", fitPage);
+      window.removeEventListener("load", fitPage);
+    };
+  }, [pageRef]);
+}
 
 
 //images creating
@@ -127,28 +165,44 @@ const imageItems = images.map((img) =>
 
 
 //rendering
-const root = createRoot(document.getElementById("root")!);
-root.render(
-  createElement(
+function AppFrame() {
+  const pageRef = useRef<HTMLDivElement | null>(null);
+  useAutoFitPage(pageRef);
+
+  return createElement(
     "div",
-    {
-      className: "page",
-    },Title("The Dk Page", '"Jersey 25", sans-serif'),
-    Footer("Derek Cardenas","Aspiring mechanical engineering student at Vaughn College of Aeronautics and Technology. Studying in 3D design and modeling.","https://www.instagram.com/derek46631?igsh=dmYwMWpsZzJ0cWpn","https://www.linkedin.com/in/derek-cardenas-baa004261/"),
+    { className: "page-wrap" },
     createElement(
       "div",
-      { className: "circle-row" },
-      divWrap(leftCircles, { className: "circle-col left-col" }),
+      {
+        className: "page",
+        ref: pageRef,
+      },
+      Title("The Dk Page", '"Jersey 25", sans-serif'),
+      Footer(
+        "Derek Cardenas",
+        "Aspiring mechanical engineering student at Vaughn College of Aeronautics and Technology. Studying in 3D design and modeling.",
+        "https://www.instagram.com/derek46631?igsh=dmYwMWpsZzJ0cWpn",
+        "https://www.linkedin.com/in/derek-cardenas-baa004261/"
+      ),
       createElement(
         "div",
-        { className: "image-col" },
-        createElement("div", { className: "image-grid" }, imageItems)
+        { className: "circle-row" },
+        divWrap(leftCircles, { className: "circle-col left-col" }),
+        createElement(
+          "div",
+          { className: "image-col" },
+          createElement("div", { className: "image-grid" }, imageItems)
+        ),
+        divWrap(rightCircles, { className: "circle-col right-col" })
       ),
-      divWrap(rightCircles, { className: "circle-col right-col" }),
-      
-    ),Plane()
-  )
-);
+      Plane()
+    )
+  );
+}
+
+const root = createRoot(document.getElementById("root")!);
+root.render(createElement(AppFrame));
 
 function startRandomCircleRotation() {
   const circles = Array.from(document.querySelectorAll<HTMLElement>(".circle-rot"));
@@ -183,6 +237,17 @@ window.addEventListener("load", () => {
   setTimeout(startRandomCircleRotation, 0);
 });
 
+function fitPage() {
+  const page = document.querySelector('.page') as HTMLElement | null;
+  if (!page) return;
+
+  const scaleX = window.innerWidth / 1920;
+  const scaleY = window.innerHeight / 1080;
+  const scale = Math.min(scaleX, scaleY);
+
+  page.style.setProperty('--scale', String(scale));
+}
+
 
 
 function setupPlaneDrag(plane: HTMLElement) {
@@ -216,3 +281,18 @@ const plane = document.querySelector<HTMLElement>(".plane");
 if (plane) {
   setupPlaneDrag(plane);
 }
+
+function updatePageScale() {
+  const page = document.querySelector<HTMLElement>(".page");
+  if (!page) return;
+  const scale = window.innerWidth / 1920;
+  page.style.setProperty("--scale", String(scale));
+}
+
+
+
+window.addEventListener('resize', fitPage);
+window.addEventListener('load', fitPage);
+fitPage();
+window.addEventListener("resize", updatePageScale);
+updatePageScale();
